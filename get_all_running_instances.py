@@ -35,14 +35,32 @@ def get_all_instances_uptime(conn):
 		info_list.append(get_all_instance_info(i))
 	return info_list
 
-def make_pretty_table(listofdicts):
+def make_pretty_instance_table(listofdicts):
 	table = PrettyTable(listofdicts[0].keys())
 	for i in listofdicts:
 		if 'terminated' not in i.values():
 			table.add_row(i.values())
 	return table.get_string(sortby='current_state')
 
-aws_config={'aws_access_key_id': os.environ['AWS_ACCESS_KEY_ID'], 'aws_secret_access_key': os.environ['AWS_ACCESS_KEY']}
-conn =ec2.EC2Connection(**aws_config)
-print make_pretty_table(get_all_instances_uptime(conn))
+def make_pretty_ip_table(listofdicts):
+	table = PrettyTable(listofdicts[0].keys())
+	for i in listofdicts:
+		table.add_row(i.values())
+	return table.get_string()
+
+def get_all_addresses(conn):
+	return conn.get_all_addresses()
+
+def get_all_addresses_with_instance_id(conn):
+	l = get_all_addresses(conn)
+	list_of_addresses = []
+	for a in l:
+		list_of_addresses.append({'address': a.public_ip, 'instance_id': a.instance_id})
+	print list_of_addresses
+	return list_of_addresses
+
+aws_config={'aws_access_key_id': os.environ['AWS_ACCESS_KEY_ID'], 'aws_secret_access_key': os.environ['AWS_SECRET_ACCESS_KEY']}
+conn = ec2.EC2Connection(**aws_config)
+print make_pretty_instance_table(get_all_instances_uptime(conn))
+print make_pretty_ip_table(get_all_addresses_with_instance_id(conn))
 
