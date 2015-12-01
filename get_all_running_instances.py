@@ -2,6 +2,8 @@ from boto import ec2
 from datetime import datetime
 from dateutil import parser
 from prettytable import PrettyTable
+import os
+
 
 def get_all_instances(conn):
 	return conn.get_only_instances()	
@@ -40,5 +42,7 @@ def make_pretty_table(listofdicts):
 			table.add_row(i.values())
 	return table.get_string(sortby='current_state')
 
-conn =ec2.EC2Connection()
+aws_config={'aws_access_key_id': os.environ['AWS_ACCESS_KEY_ID'], 'aws_secret_access_key': os.environ['AWS_SECRET_ACCESS_KEY']}
+conn =ec2.EC2Connection(**aws_config)
 print make_pretty_table(get_all_instances_uptime(conn))
+
