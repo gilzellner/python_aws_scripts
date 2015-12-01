@@ -42,7 +42,7 @@ def make_pretty_table(listofdicts):
 			table.add_row(i.values())
 	return table.get_string(sortby='current_state')
 
-aws_config={'aws_access_key_id': os.environ['AWS_AUTO_KEY_ID'], 'aws_secret_access_key': os.environ['AWS_AUTO_SECRET_KEY']}
+aws_config={'aws_access_key_id': os.environ['AWS_ACCESS_KEY_ID'], 'aws_secret_access_key': os.environ['AWS_ACCESS_KEY']}
 conn =ec2.EC2Connection(**aws_config)
 print make_pretty_table(get_all_instances_uptime(conn))
 
