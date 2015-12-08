@@ -37,8 +37,6 @@ def get_all_instances_uptime(conn):
 				info_list.append(instance_info['instance_id'])
 	return info_list
 
-
-
 aws_config={'aws_access_key_id': os.environ['AWS_ACCESS_KEY_ID'], 'aws_secret_access_key': os.environ['AWS_SECRET_ACCESS_KEY']}
 conn = ec2.EC2Connection(**aws_config)
 
